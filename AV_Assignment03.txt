@@ -1,0 +1,60 @@
+Andy Villegas
+CS 1222-03
+Assignment 03
+
+
+#1
+select title_name,type
+from Titles
+where price > all (select max(price)
+				  from Titles
+				  where type='history');
+
+#2
+select TA.title_id, A.au_id
+from Title_Authors TA, Authors A 
+where TA.au_id=A.au_id
+and A.au_lname='Hull';
+
+#3
+select au_fname, au_lname
+from Authors
+where au_id !=all (select au_id
+					from Title_Authors);
+
+#4
+select au_id
+from Title_Authors
+where title_id =any (select title_id
+				    from Titles
+                    where type = 'children');
+
+#5
+select pub_name
+from Publishers 
+where pub_id =any (select pub_id
+				from Titles
+				group by pub_id
+				having count(title_id) > 2);
+
+#6
+select title_name, type
+from Titles T
+where title_id in (select title_id
+				from Title_Authors
+				where royalty_share = (select min(royalty_share)
+									 from Title_Authors));
+
+#7
+select T.pub_id 
+from Titles T, Publishers P 
+where T.pub_id=P.pub_id
+and T.price in (select min(price)
+				from Titles);
+
+#8
+select P.pub_name 
+from Titles T, Publishers P 
+where T.pub_id=P.pub_id
+and T.pages in (select max(pages)
+				from Titles);
