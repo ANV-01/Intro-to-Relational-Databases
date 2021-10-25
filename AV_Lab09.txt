@@ -1,0 +1,52 @@
+Andy Villegas
+CS 1222-03
+Lab 9
+#1
+create view AuthorNoBook as
+select concat(au_fname, au_lname) as 'Author(s) who have not written a book'
+from Authors
+where au_id not in (select au_id
+					from Title_Authors);
+                    
+select *
+from AuthorNoBook;
+
+#2
+create view AuthorsTitlesRoyalties as
+select concat(A.au_fname,' ', A.au_lname) as 'Name of Author', title_name, royalty_rate
+from Authors A, Title_Authors TA, Titles T, Royalties R
+where A.au_id=TA.au_id and T.title_id=TA.title_id and R.title_id=TA.title_id;
+
+select *
+from AuthorsTitlesRoyalties;
+
+#3
+create view SmallRoyaltyRate as
+select P.pub_name
+from Publishers P, Titles T, Royalties R
+where P.pub_id=T.pub_id and R.title_id=T.title_id
+and R.royalty_rate = (select min(royalty_rate)
+					 from Royalties);
+                     
+select *
+from SmallRoyaltyRate;
+
+#4
+create view Over18 as
+select *
+from Titles
+where price > 18;
+
+update Over18 
+set title_id= ' ', title_name = ' ', type = ' ', pub_id = ' ', pages= ' ', price= ' ',sales= ' ', pubdate= ' ', contract= ' '
+where price > 18;
+
+#5
+create view Over20 as
+select *
+from Titles
+where price > 20;
+
+update Over20 
+set title_id= ' ', title_name = ' ', type = ' ', pub_id = ' ', pages= ' ', price= ' ',sales= ' ', pubdate= ' ', contract= ' '
+where price > 20;
