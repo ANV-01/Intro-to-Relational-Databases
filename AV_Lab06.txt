@@ -1,0 +1,84 @@
+Andy Villegas
+CS 1222-03
+Lab 6
+
+#1
+select ArtistName
+from Artists A
+where not exists (select ArtistID
+				  from Titles T
+                  where A.ArtistID=T.ArtistID);
+
+#2
+select StudioName, WebAddress
+from Studios
+where webaddress is not null
+union
+select ArtistName, WebAddress
+from Artists
+where webaddress is not null;
+
+#3
+select (select count(gender) from Members where gender='M') as 'Males' , 
+(select count(gender) from Members where gender='F') as 'Females' ,
+ (select count(gender) from Members) as 'All Members';
+
+#4
+select count(entrydate) as 'Same Year Entries' , year(EntryDate) as 'Year'
+from Artists
+group by year(entrydate);
+
+#5
+select TitleID, count(mp3) + count(realaud) as '# of Audio Files'
+from Tracks
+where mp3 != 0 and realaud !=0
+group by TitleID;
+
+#6 - not sure how to do the last part
+select TitleID, TrackTitle, LengthSeconds, (select avg(lengthseconds)/1 from Tracks where titleid=1) as 'Avg Length Seconds'
+from Tracks
+where TitleID=1;
+
+#7 - not sure how to do the last part
+select TitleID, TrackTitle, LengthSeconds, (select avg(lengthseconds)/1 from Tracks) as 'Avg Length Seconds'
+from Tracks;
+
+#8 - didnt understand at all
+
+#9 - i feel like a group by is needed but im not to sure how to implement it 
+select Title, (select count(TrackTitle) from Tracks) as '# of Tracks' , (select sum(LengthSeconds)/60 from Tracks) as 'Total Minutes per Title'
+from Titles;
+
+#10 - dont really get this one, not sure how to add another column when using union if that's even possible
+select substring(right(replace(homephone,'-',''),10),1,3) 'Area Codes & # of Phone Numbers'
+from Members
+union
+select substring(right(replace(phone,'-',''),10),1,3)
+from Studios
+union
+select count(right(phone, 8))
+from Studios
+union
+select count(right(homephone, 8))
+from Members;
+
+#11 - dont know how to implement the count for the members per artist
+select A.ArtistName, concat(M.FirstName, ' ', M.LastName) as 'Name of Member(s)'
+from Artists A, Members M, XrefArtistsMembers X inner join (
+select count(M.MemberID)
+from XrefArtistsMembers X inner join Members M inner join Artists A
+on A.ArtistID=X.ArtistID and M.MemberID=X.MemberID) as Count
+where A.ArtistID=X.ArtistID
+and M.MemberID=X.MemberID
+group by A.ArtistName, M.FirstName, M.LastName;
+
+#12 - didnt get
+
+#13
+Select  A.ArtistID, A.ArtistName
+From (Artists A Inner Join XrefArtistsMembers X 
+On A.ArtistID = X.ArtistID) Inner Join 
+	(Select MemberID     
+	From Members M           
+    Where M.Country!='USA') M           
+    On M.MemberID = X.MemberID;
