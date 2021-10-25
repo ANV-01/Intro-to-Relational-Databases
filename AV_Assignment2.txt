@@ -1,0 +1,55 @@
+Andy Villegas
+CS 1222-03
+Assignment 2
+
+
+#1
+select pub_id, pub_name
+from Publishers
+where country='USA';
+
+#2
+select au_fname, au_lname
+from Authors
+where address like '%st';
+
+#3
+select title_name, price
+from Titles
+where price < 12 and type='children';
+
+#4
+select au_fname as 'First Name', au_lname as 'Last Name', zip as 'Zip Code'
+from Authors
+where zip like '_0%';
+
+#5
+select au_id
+from Title_Authors
+group by au_id;
+
+#6
+select title_id, count(au_id)
+from Title_Authors
+group by title_id;
+
+#7
+select state, count(au_id) as '# of authors who live per state'
+from Authors
+group by state;
+
+#8
+select type, avg(pages) as 'average pages per type'
+from Titles
+group by type;
+
+#9
+select pub_id, count(title_id) as '# of Books', min(price) as 'Minimum Price', max(price) as 'Maximum Price', avg(price) as 'Average Price'
+from Titles
+group by pub_id;
+
+#10
+select type, avg(price)
+from Titles
+group by type
+having avg(price) > 15;
