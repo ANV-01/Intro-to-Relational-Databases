@@ -1,0 +1,64 @@
+Andy Villegas
+CS 1222-03
+Lab 10
+
+#1
+create trigger before_memeber_update 
+before update
+on Members_audit for each row 
+insert into Member_audit
+set action = 'update',
+firstname=old.firstname,
+lastname=old.lastname,
+changedat=now();
+
+#2
+delimiter **
+
+create trigger before_titles_insert  
+before insert 
+on Titles for each row
+begin
+    declare rowcount int; 
+  
+    select count(*) 
+    into rowcount
+    from Titles
+    where artistID = new.artistID;
+  
+    if rowcount > 0 then  
+        update Titles_Total
+        set total=rowcount + 1
+        where artistID=new.artistID;
+    else 
+        insert into Titles_Total(artistID, total)
+        values(new.artistID, 1);
+    end if;     
+end **   
+
+delimiter ;
+
+#3
+delimiter **
+create trigger after_artists_insert 
+after insert 
+on Artist_Welcome for each row 
+begin 
+	declare website varchar(25);
+    
+    select WebAddress
+    into website
+    from Artists;
+    
+    insert into Artists_Welcome (artistname)
+    select ArtistName
+    from Artists;
+
+ if website is null then
+		update Artist_Welcome
+        set message = 'please do not forget to provide your web address!';
+ end if;
+    
+end **
+delimiter ;
+
