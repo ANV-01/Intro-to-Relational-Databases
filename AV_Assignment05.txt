@@ -1,0 +1,31 @@
+Andy Villegas
+CS 1222-03
+Assignment 5
+
+#1
+select title_name
+from Titles
+where extract(month from pubdate)=5
+and extract(year from pubdate)+10 = extract(year from curdate());
+
+#2
+select concat(left(au_fname,1),'. ', au_lname) as 'Name'
+from Authors 
+where (au_fname!=' ' and au_lname!=' ')
+order by au_lname;
+
+#3
+select substring_index(pub_name, ' ', 1) as 'Press'
+from Publishers 
+where pub_name like '%press';
+
+#4
+select concat(au_fname,' ', au_lname) as 'Author'
+from Authors A inner join Title_Authors TA inner join Titles T 
+on A.au_id = TA.au_id and TA.title_id = T.title_id
+where length(title_name) = (select max(length(title_name)) 
+							from Titles);
+
+#5
+select au_id, substring(right(replace(phone,'-',''),10),1,3) as 'Area Code', right(phone, 8) as 'Phone Number' 
+From Authors;
