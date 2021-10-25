@@ -1,0 +1,26 @@
+Andy Villegas
+CS 1222-03
+Assignment 1
+
+#1
+select *
+from Publishers;
+
+#2
+select pub_name
+from Publishers;
+
+#3
+select *
+from Publishers
+where state='ca';
+
+#4
+select *
+from Titles
+where type='history';
+
+#5
+select title_name, sales, pubdate
+from Titles
+where pub_id='p01';
