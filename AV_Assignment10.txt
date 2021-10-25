@@ -1,0 +1,49 @@
+Andy Villegas
+CS 1222-03
+Assignment 10
+
+#1
+delimiter $$
+create trigger before_titles_insert
+before insert on Titles for each row
+
+begin  
+    declare rowcount int;
+    
+    select count(*)
+    into rowcount
+    from Titles
+    where pub_id = new.pub_id;
+  
+    if rowcount > 0 then
+        update Publisher_Total
+        set total= rowcount + 1
+        where pub_id = new.pub_id;
+    else
+        insert into Publisher_Total(pub_id, total)
+        values(new.pub_id, 1);
+    end if;
+end$$
+delimiter ;
+
+#2 - didnt get
+delimiter $$
+create trigger after_title_author_insert
+after insert on Title_Authors for each row
+begin 
+	declare royalty_share Varchar int;
+
+    select royalty_rate
+    into royalty_share
+    from Royalties R
+    where R.title_id=TA.title_id;
+    
+    if royalty_share < 0.5 then
+		insert into Author_Messages
+        set au_id, "your royalty share is low"
+	else 
+		insert into Author_Messages
+        set au_id, "your royalty share is high"
+end$$
+
+delimiter ;
