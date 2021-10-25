@@ -1,0 +1,31 @@
+Andy Villegas
+CS 1222-03
+Assignment 08
+
+#1
+alter table Authors
+drop primary key; 
+
+alter table Authors
+add primary key(au_id);
+
+#2
+alter table Authors add constraint un_au_fname_au_lname_phone
+unique(au_fname,au_lname,phone);
+
+#3
+create table Title_Authors2
+select * from Title_Authors;
+
+alter table Title_Authors2
+add primary key(title_id,au_id);
+
+#4
+alter table Title_Authors2
+drop primary key;
+
+#5
+alter table Title_Authors2
+add constraint fk_au_id
+foreign key (au_id)
+references Authors(au_id);
