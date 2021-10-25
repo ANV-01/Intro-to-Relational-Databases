@@ -1,0 +1,68 @@
+Andy Villegas
+CS 1222-03
+Lab 04
+
+#1
+select A.ArtistName
+from Artists A inner join Titles T 
+on A.ArtistID=T.ArtistID
+where T.TitleId = (select TitleID
+				 from Tracks
+                 where TrackTitle='Front Door');
+
+#2
+select artistname
+from Artists 
+where ArtistID not in (select ArtistID
+						 from Titles);
+
+#3
+select A.ArtistName, count(X.MemberID)
+from Artists A LEFT JOIN XrefArtistsMembers X 
+on A.ArtistID=X.ArtistID
+group by A.ArtistName;
+
+#4
+select A.ArtistName,T.StudioID
+from Artists A LEFT JOIN Titles T
+on T.ArtistID=A.ArtistID;
+
+#5
+select concat(S.FirstName, " ", S.LastName) as 'Name of Sales Person', count(M.SalesID) as '# of Members worked with'
+from Members M left join SalesPeople S
+on M.SalesID=S.SalesID
+group by S.FirstName, S.LastName;
+
+#6 - Not sure if the studio contact is supervisor
+select concat(M.FirstName," ", M.LastName) as 'Member Name', concat(S.FirstName," ", S.LastName) as 'Primary Contact', St.Contact as 'Secondary Contact'
+from Members M inner join SalesPeople S inner join Studios St
+on S.SalesID=M.SalesID
+and S.SalesID=St.SalesID;
+
+#7 - Not sure if the studio contact is supervisor
+
+
+#8
+select concat(M.FirstName," ", M.LastName) as 'Member Name'
+from Members M, XrefArtistsMembers X, Artists A
+where M.MemberID=X.MemberID
+and A.ArtistID=X.ArtistID
+and A.ArtistName='Highlander';
+
+#9 - Didn't understand
+select T.Title, S.StudioName, A.ArtistName
+from Titles T, Studios S, Artists A, Tracks Tr
+where T.ArtistID=A.ArtistID and S.StudioID=T.StudioID and T.TitleID=Tr.TitleID;
+
+#10
+select G.Genre
+from Titles T right join Genre G
+on T.Genre=G.Genre
+where T.Genre is null;
+
+#11 - Did not understand fully
+select G.Genre
+from Titles T, Genre G, Tracks Tr
+where Tr.TitleID=T.TitleID and T.Genre=G.Genre
+
+
