@@ -1,0 +1,48 @@
+Andy Villegas
+CS 1222-03
+
+#1
+CREATE TABLE Authors2
+  (
+  au_id    CHAR(3)     NOT NULL,
+  au_fname VARCHAR(15) NOT NULL,
+  au_lname VARCHAR(15) NOT NULL,
+  phone    VARCHAR(12)         ,
+  address  VARCHAR(20)         ,
+  city     VARCHAR(15)         ,
+  state    CHAR(2)             ,
+  zip      CHAR(5)             ,
+  CONSTRAINT pk_Authors PRIMARY KEY (au_id)
+  );
+
+#2
+insert into Authors2
+select *
+from Authors;
+
+#3
+update Authors2
+set au_fname = 'Buttford'
+where au_fname = ' ' ;
+
+#4
+alter table Authors2
+add email varchar(25);
+
+#5
+update Authors2
+set email = concat((select lower(substring(au_fname, 1, 1))), (select lower(au_lname)), '@hotmail.com');
+
+#7 - not sure if im on the right track or not
+delete from Authors2
+where au_id = (select au_id
+				from Title_Authors
+                where title_id = (select title_id
+								  from Titles
+                                  where pub_id = (select pub_id
+												 from Publishers
+                                                 where pub_name = 'Tenterhooks Press')));
+
+#8
+alter table Authors2
+drop column email;
