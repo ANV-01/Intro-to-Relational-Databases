@@ -1,0 +1,31 @@
+Andy Villegas
+CS 1222-03
+Assignment 6
+
+
+#1
+select 'A' as 'Author or Publisher', concat(au_fname, ' ', au_lname) as Name, City, State
+from Authors
+union
+select 'P' as 'Author or Publisher', pub_name as Name, City, State
+from Publishers;
+
+#2
+select type as 'Booktype', title_name as 'Book name'
+from Titles
+union
+select concat(type,' ','total') as 'Booktype', count(*)
+from Titles
+group by booktype
+order by Booktype;
+
+#4 - no clue how i got so far on #5 but not #4 
+select type as 'Booktype', title_name as 'Book name', avg(pages)
+from Titles
+group by type
+
+#5 - dont get
+select distinct *
+from (select type as 'BookType', title_name as 'Bookname',pages
+ from Titles) as Bruh, (select distinct avg(pages) as AveragePages from Titles) as Pee
+order by booktype;
