@@ -1,0 +1,26 @@
+Andy Villegas
+CS 1222-03
+Lab 1
+
+1)
+select Title,UPC,Genre
+from Titles;
+
+2)
+select TitleID,ArtistID,Title,StudioID,UPC,Genre
+from Titles
+where ArtistID=2;
+
+3)
+select FirstName, LastName, HomePhone, EMail
+from Members;
+
+4)
+select MemberID,Gender
+from Members
+where Gender='M';
+
+5)
+select MemberID,Country
+from Members
+where Country='Canada';
