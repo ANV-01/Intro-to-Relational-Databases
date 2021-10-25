@@ -1,0 +1,88 @@
+Andy Villegas
+CS 1222-03
+Lab 2
+
+#1
+select FirstName, LastName, Region
+from Members
+where Region='VA' and EMail like '%@%'
+or  Region='VA' and WorkPhone is not null;
+
+#2
+select FirstName, LastName, Region, HomePhone,Gender
+from Members
+where Region='GA' and HomePhone like '822%'
+or  Region='GA' and Gender='F';
+
+#3
+select *
+from Tracks 
+where MP3='0';
+
+#4
+select *
+from Titles
+where UPC like '%_2';
+
+#5
+select ArtistName as 'Artist Name', WebAddress as 'Web Address'
+from Artists
+where WebAdress is not null;
+
+#6
+select TitleID, TrackNum, TrackTitle
+from Tracks
+where TrackTitle like 'Song%';
+
+#7
+select *
+from Tracks
+where trackNum=TitleID;
+
+#8
+select FirstName as 'First Name', LastName as 'Last Name', Base as 'Weekly Salary'
+from SalesPeople
+where (Base*5) > 1000;
+
+#9
+select TrackNum,LengthSeconds, avg(LengthSeconds) as 'Avg Length of TitleID 4 in seconds'
+from Tracks
+where TitleID=4
+group by TrackNum,LengthSeconds;
+
+#10
+select Region,count(Region) as 'Members per region'
+from Members
+group by Region
+order by Region DESC;
+
+
+#11
+select LeadSource,min(EntryDate) as 'Earliest Date', max(EntryDate) as 'Latest Date', Count(ArtistID) as '# of Artists from Source'
+from Artists
+group by LeadSource;
+
+#12
+select titleID as 'Title ID' , avg(LengthSeconds)/60 as 'Average Length in Minutes', Min(LengthSeconds) as 'Shortest Track Length in Minutes', Max(LengthSeconds) as 'Longest Track Length in Minutes'
+from Tracks
+group by titleID
+having avg(LengthSeconds) > 300;
+
+#13
+select titleID as 'Title ID' , avg(LengthSeconds)/60 as 'Average Length in Minutes', Min(LengthSeconds) as 'Shortest Track Length in Minutes', Max(LengthSeconds) as 'Longest Track Length in Minutes'
+from Tracks
+where MP3=1
+group by titleID
+having avg(LengthSeconds) > 300;
+
+#14
+select TitleID, count(TrackNUM) as 'Number of Tracks'
+from Tracks
+group by TitleID
+having count(TrackNUM) < 9;
+
+#15
+select region, count(EMail) as '# of Members with E-Mail'
+from Members
+group by region
+having count(EMail) > 1;
