@@ -1,0 +1,17 @@
+#1
+alter table Contracts add primary key (ContractID, SalesID);
+
+#2
+alter table Contracts 
+add constraint fk_Contracts_SalesPeople
+foreign key(salesID)
+references SalesPeople(salesID);
+
+#3
+alter table Contracts
+add constraint un_Contracts_CDate_EDate
+unique (ContractDate, ExpirationDate);
+
+#4
+alter table Contracts
+drop primary key;
