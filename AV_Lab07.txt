@@ -1,0 +1,82 @@
+Andy Villegas
+CS 1222-03
+LAB 7
+
+
+#1
+insert into Artists(ArtistID,ArtistName,City,Region,Country,WebAddress,EntryDate,LeadSource)
+	values(12,'November','New Orleans', 'LA', 'USA', 'www.november.com', '2021-04-07', 'Directmail');
+
+#2
+insert into Tracks values
+((select TitleID from Titles where Title='Time Flies'),11,'Spring',150,1,0);
+
+#3
+create table Members2 (
+	MemberID int ,
+	FirstName varchar (25) null ,
+	LastName varchar (25) null ,
+	Address varchar (60) null ,
+	City varchar (25) null ,
+	Region varchar (15) null ,
+	PostalCode varchar (10) null ,
+	Country varchar (20) null ,
+	HomePhone varchar (16) null ,
+	WorkPhone varchar (16) null ,
+	EMail varchar (40) null ,
+	Gender char (1) null ,
+	Birthday date null ,
+	SalesID smallint null 
+);
+
+#4
+drop table if exists Members2;
+
+create table Members2 
+select * from Members;
+
+#5
+update Members2 M2, SalesPeople S
+set M2.SalesID = 2
+where M2.SalesID=S.SalesID
+	and M2.SalesID=1;
+
+
+#7
+insert into Artists(ArtistID,ArtistName,City,Region,Country,WebAddress,EntryDate,LeadSource)
+	values(13, 'Doug and Terry', (select city from Members where concat(FirstName, ' ', LastName) = 'Doug Finney'), 
+    (select region from Members where concat(FirstName, ' ', LastName) = 'Doug Finney'),
+    (select country from Members where concat(FirstName, ' ', LastName) = 'Doug Finney'), NULL,'2021-04-07',NULL);
+
+#9
+set WebAddress = concat('www.lyricmusic.com/',ArtistID)
+where WebAddress is null
+
+
+
+#8
+insert into XrefArtistsMembers(MemberID, ArtistID, RespParty)
+	values((select MemberID from Members where concat(FirstName, ' ', LastName) = 'Doug Finney'), (select ArtistID from Artists where ArtistName='Doug and Terry'),1);
+    
+insert into XrefArtistsMembers(MemberID, ArtistID, RespParty)
+	values((select MemberID from Members where concat(FirstName, ' ', LastName) = 'Terry Irving'), (select ArtistID from Artists where ArtistName='Doug and Terry'),0);
+
+#10
+delete from Members2
+where MemberID in (select MemberID
+					from XrefArtistsMembers
+                    where ArtistID = (select ArtistID
+									  from Artists
+                                      where ArtistName = 'Sonata'));
+
+#11
+alter table Members2
+drop column Firstname,
+drop column lastname;
+
+alter table Members2
+add Name varchar(25) null
+update Artists;
+
+#12
+drop table Members2;
