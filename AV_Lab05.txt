@@ -1,0 +1,57 @@
+Andy Villegas
+CS 1222-03
+Lab 5 
+
+#1
+select concat(firstname,' ',lastname)as "Member's Name", homephone
+from Members;
+
+#2
+select concat(firstname,' ',lastname)as "Member's Name", datediff(now(),birthday)/365 as 'Age'
+from Members;
+
+#3
+select studioname, left(contact,locate(' ',contact)-1) as 'First Name of Contact'
+from Studios;
+
+#4
+select studioname, right(contact,locate(' ',contact)-1) as 'Last Name of Contact'
+from Studios;
+
+#5
+select tracktitle
+from Tracks
+where length(tracktitle) = (select max(length(tracktitle))
+							from Tracks);
+
+#6
+select G.Genre , ifnull(T.Title,'No title')
+from Genre G left outer join Titles T
+on G.genre=T.genre;
+
+#7
+select concat(substring(upper(genre), 1, 1),substring(lower(genre), 2, 15)) as Genre 
+from Genre;
+
+#8
+select G.Genre,
+case T.Title
+	when T.Title is null then T.Title
+    else 'No Title'
+end Genre
+from Genre G left outer join Titles T
+on G.Genre=T.Genre;
+
+#9
+select artistname,
+case leadsource
+	when 'Ad' then 'Ad'
+	else 'Not Ad'
+end leadsource
+from Artists;
+
+#10
+select A.ArtistName, datediff(A.EntryDate,M.Birthday)/365
+from Artists A, Members M, XrefArtistsMembers X
+where A.ArtistID=X.ArtistID
+and M.MemberID=X.MemberID;
