@@ -1,0 +1,107 @@
+Andy Villegas
+CS 1222-03
+Lab 3
+
+#1
+select max(LengthSeconds)
+from Tracks
+where RealAud > 0 and TitleID = (select TitleID
+								from Titles
+							    where Genre = 'metal');
+
+#2
+select ArtistID, ArtistName, EntryDate
+from Artists
+where EntryDate < (select min(EntryDate)
+				from Artists
+                where leadsource = 'Directmail');
+
+#3
+select ArtistID, ArtistName, EntryDate
+from Artists
+where EntryDate < (select max(EntryDate)
+				from Artists
+                where leadsource = 'Directmail');
+
+#4
+select ArtistName, EntryDate
+from Artists
+where EntryDate = (select min(EntryDate)
+					from Artists);
+
+#5
+select TrackTitle
+from Tracks
+where TitleID in (select TitleID
+				from Titles
+                where Genre='alternative');
+
+#6
+select *
+from Genre
+where Genre not in (select Genre
+				    from Titles);
+
+#7
+select TrackTitle, LengthSeconds
+from Tracks
+where LengthSeconds > (select max(LengthSeconds)
+                    from Tracks
+                    where TitleID in (select TitleID
+                    from Titles
+                    where genre='metal'));
+
+#8
+select TrackTitle
+from Tracks
+where LengthSeconds = (select max(LengthSeconds)
+						from Tracks);
+
+#9
+select firstname, lastname, birthday
+from Members t1
+where Birthday < all (select birthday
+						from Members t2
+                        where t2.Birthday != t1.birthday);
+
+#10
+select firstname, lastname, birthday
+from Members
+where Birthday =any (select min(birthday)
+					from Members
+					where Birthday > (select min(birthday)
+										from Members));
+#11
+select Title, TrackTitle
+from Tracks, Titles
+where Tracks.TitleID=Titles.TitleID
+and studioID=1;
+
+#12
+select title, studioname
+from Titles, Studios
+where Titles.studioid=Studios.studioID;
+
+#13
+select SalesPeople.FirstName, SalesPeople.LastName
+from SalesPeople, Members
+where SalesPeople.salesID=Members.SalesID
+and Members.LastName = 'Alvarez';
+
+#14
+select Members.FirstName as "Member's First Name" , Members.LastName as "Member's Last Name", SalesPeople.FirstName as "Sales Person's First Name", SalesPeople.LastName as "Sales Person's Last Name"
+from SalesPeople, Members
+where SalesPeople.salesID=Members.SalesID
+and Members.Region='CA';
+
+#15
+select artistname, count(titleid) as 'Number of Titles'
+from Artists A, Titles T
+where A.artistid=T.titleid group by artistname having count(titleid)>1;
+
+#16
+select title, count(tracknum) 
+from Titles Ti, Tracks Tr
+where Ti.titleid=Tr.titleid 
+group by title 
+having count(tracknum)<9;
